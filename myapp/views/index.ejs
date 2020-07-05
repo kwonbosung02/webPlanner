@@ -1,116 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>001101</title>
-    <!-- MDB icon -->
-    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
-    <link
-      href="https://raw.githubusercontent.com/kwonbosung02/webPlanner/master/myapp/views/css/style.css"
-      rel="stylesheet"
-    />
 
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-    />
-    <!-- Google Fonts -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    />
-    <!-- Bootstrap core CSS -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Material Design Bootstrap -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.min.css"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>001101</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
 
-  </head>
-  <style>
-    body {
-      background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true");
-      /*
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<style>
+  body {
+    background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true");
+    /*
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
       */
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-    }
-  </style>
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    /* ges Hoehe der Seite -> weitere Hoehenangaben werden relativ hierzu ausgewertet */
+    overflow: hidden;
+    /*  hide scrollbars */
+    opacity: 1.0;
+    -webkit-transition: background 0.5s linear;
+    -moz-transition: background 0.5s linear;
+    -o-transition: background 0.5s linear;
+    -ms-transition: background 0.5s linear;
+    transition: background 0.5s linear;
+    font-family: 'Sunflower', sans-serif;
+  }
 
-  <body>
-    <!--Main Navigation-->
+  a {
+    text-decoration: none;
+    color: rgb(56, 56, 56);
 
-    <!--Main Navigation-->
-    <!-- Start your project here-->
-    <div style="height: 100vh;">
-      <div class="flex-center flex-column">
-        <h5 class="animated fadeIn mb-3"></h5>
-        <!--<p class="animated fadeIn text-muted">MDB Team</p>-->
-        <ul class="tg-list">
-        <li class="tg-list-item">
-          <h4>Light</h4>
-          <input class="tgl tgl-light" id="cb1" type="checkbox"/>
-          <label class="tgl-btn" for="cb1"></label>
-        </li>
-        <li class="tg-list-item">
-          <h4>iOS</h4>
-          <input class="tgl tgl-ios" id="cb2" type="checkbox"/>
-          <label class="tgl-btn" for="cb2"></label>
-        </li>
-        <li class="tg-list-item">
-          <h4>Skewed</h4>
-          <input class="tgl tgl-skewed" id="cb3" type="checkbox"/>
-          <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="cb3"></label>
-        </li>
-        <li class="tg-list-item">
-          <h4>Flat</h4>
-          <input class="tgl tgl-flat" id="cb4" type="checkbox"/>
-          <label class="tgl-btn" for="cb4"></label>
-        </li>
-        <li class="tg-list-item">
-          <h4>Flip</h4>
-          <input class="tgl tgl-flip" id="cb5" type="checkbox"/>
-          <label class="tgl-btn" data-tg-off="Nope" data-tg-on="Yeah!" for="cb5"></label>
-        </li>
-      </ul>
+  }
+
+  a:hover {
+    color: #4a7846;
+  }
+
+  .login_div {
+    display: none;
+    ;
+    position: absolute;
+  }
+
+  .display {
+    display: block;
+  }
+
+  .register_div {
+    display: none;
+    position: absolute;
+  }
+</style>
+
+<body>
+  <!--Main Navigation-->
+
+  <!--Main Navigation-->
+  <!-- Start your project here-->
+  <div style="height: 100vh; width: 100vh;">
+    <div class="animated fadeIn mb-3 main_div "
+      style="position: absolute;margin-left: 4vw;margin-top: 14vw;font-size: 7vw;">
+      <tag style="color: #4a7846;" ;">나무늘보</tag>처럼 <br>살고싶다<br><a id="login_tag" href="#"
+        style="font-size:1.7vw;font-weight: 500;margin-left: 1vw;padding: 0vw;">로그인하기</a>
+    </div>
+    <div class="login_div " style=" margin-left:15vw;margin-top:21vw;width: 18vw;">
+      <!-- Default form register -->
+      <!-- Default form login -->
+      <form class="text-centerp-5 fadeIn" action="#!">
+
+
+
+        <!-- Email -->
+        <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="이메일">
+
+        <!-- Password -->
+        <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="비밀번호">
+
+
+        <!-- Sign in button -->
+        <button class="btn btn-info btn-block my-4 btn-dark-green" type="submit">로그인</button>
+
+        <!-- Register -->
+
+        <a id="register_tag" href="#">회원가입하기</a>
+
+        <!-- Social login -->
+
+      </form>
+      <!-- Default form login -->
+    </div>
+    <div class="register_div" style=" margin-left:13vw;margin-top:18vw;width: 22vw;">
+      <!-- Default form register -->
+      <form class="text-center  p-5" action="#!">
+
+
+        <div class="form-row mb-4">
+          <div class="col">
+            <!-- First name -->
+            <input type="text" id="name" class="form-control" placeholder="이름">
+          </div>
+
+        </div>
+
+        <!-- E-mail -->
+        <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="이메일">
+
+        <!-- Password -->
+        <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="비밀번호"
+          aria-describedby="defaultRegisterFormPasswordHelpBlock">
+
+
+
+
+        <!-- Sign up button -->
+        <button class="btn btn-info my-4 btn-block btn-dark-green" type="submit">회원가입</button>
+
+
+
+      </form>
+      <!-- Default form register -->
+    </div>
+    <div class="flex-center flex-column">
+      <h5 class="animated fadeIn mb-3"></h5>
+      <!--<p class="animated fadeIn text-muted">MDB Team</p>-->
+      <div class="custom-control custom-switch animated fadeIn" style="margin-left: -38vw;margin-bottom: -44vw;">
+        <input type="checkbox" class="custom-control-input" id="customSwitches" />
+        <label class="custom-control-label" for="customSwitches">Darkmode</label>
       </div>
     </div>
-    <!-- End your project here-->
+  </div>
+  <!-- End your project here-->
 
-    <!-- JQuery -->
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    ></script>
-    <!-- Bootstrap tooltips -->
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"
-    ></script>
-    <!-- Bootstrap core JavaScript -->
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"
-    ></script>
-    <!-- MDB core JavaScript -->
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"
-    ></script>
-  </body>
+  <!-- JQuery -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascr 
+      src=" https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
+  <script>
+    var flag = true;
+    $(function () {
+
+      $("#customSwitches").click(function () {
+        if (flag == true) {
+          console.log(true);
+
+          $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_dark.jpg?raw=true)");
+
+
+
+          flag = false;
+
+
+        }
+        else {
+          console.log(false);
+
+          $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true)");
+
+          flag = true;
+        }
+
+      });
+      $('#login_tag').click(function () {
+        $(".main_div").addClass('fadeOut mb1', function () {
+
+        });
+        setTimeout(function () {
+          $(".login_div").css('display', 'block');
+        }, 1200);
+
+
+      });
+
+      $('#register_tag').click(function () {
+        $(".login_div").css('display', 'none');
+        setTimeout(function () {
+          $(".register_div").css('display', 'block');
+        }, 200);
+      })
+    });
+
+  </script>
+</body>
+
 </html>
