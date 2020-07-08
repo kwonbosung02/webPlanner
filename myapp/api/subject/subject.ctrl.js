@@ -1,19 +1,7 @@
 const SubjectModel = require('../../models/subject');
+const mongoose = require("mongoose");
 
-const list = (req,res)=>{
 
-    if(Number.isNaN(limit)){
-        
-        return res.status(400).end();
-    }
-    SubjectModel.find((err,result)=>{
-        if(err) return res.status(500).end();
-        //res.json(result)
-        res.render("/mypage",{result});
-    }).sort({ _id: -1 });;
-
-    
-};
 const showCreatePage = (req,res) =>{
     res.render("subject/create");
     console.log("called");
@@ -30,6 +18,34 @@ const create = (req, res) =>{
     })    
 
 };
+const detail = (req,res) =>{
+    //const id = parseInt(req.params.id,10);
+    const id = req.params.id;
 
-module.exports = {list,showCreatePage,create};
+    //1.findByid
+    //MusicModel.findById(id,(err,result)=>{
+    //   if(err) throw err;
+    //    if(!result) return res.status(404).end();
+    //    res.json(result);
+    //})
+    
+    //2.findOne
+    SubjectModel.findOne({_id:id},(err,result)=>{
+        if(err) return res.status(500).end();
+        if(!result) return res.status(404).end();
+        res.render("detail",{result});
+    })
+
+};
+
+const checkId= (req,res,next)=>{
+    const id = req.params.id;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).end();
+    }
+    next();
+}
+
+
+module.exports = {showCreatePage,create,checkId,detail};
 

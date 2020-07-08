@@ -1,9 +1,11 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userModel = require("../../models/user");
+const SubjectModel = require('../../models/subject');
+
 const signup = (req,res) =>{
 
-  const { name, email, password } = req.body;
+const { name, email, password } = req.body;
   
   if (!name || !email || !password)
     return res.status(400).send("필수값이 입력되지 않았습니다");
@@ -89,7 +91,18 @@ const checkAuth = (req, res, next) => {
 };
 
 const showMypage = (req,res) =>{
-  res.render("mypage");
+  
+  SubjectModel.find((err,result)=>{
+    if(err) return res.status(500).end();
+    //res.json(result)
+    console.log(result);
+
+    res.render("mypage",{result});
+    
+}).sort({ _id: -1 });;
+
+//res.render("mypage");
+
 }
 
 

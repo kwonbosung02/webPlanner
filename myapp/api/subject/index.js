@@ -8,9 +8,9 @@ router.use('/', function (req, res, next) {
   console.log('client로부터 요청이 들어옴');  
   next();
 });
-router.get('/', ctrl.list);
-router.get("/new",ctrl.showCreatePage);
 
+router.get("/new",ctrl.showCreatePage);
+router.get('/:id',ctrl.checkId, ctrl.detail);
 router.post("/",ctrl.create);
 module.exports = router;
 

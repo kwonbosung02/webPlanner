@@ -23,11 +23,7 @@
 <style>
   body {
     background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true");
-    /*
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-      */
+
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -85,15 +81,15 @@
     <div class="login_div " style=" margin-left:15vw;margin-top:21vw;width: 18vw;">
       <!-- Default form register -->
       <!-- Default form login -->
-      <form class="text-centerp-5 fadeIn" action="#!">
+      <form class="text-centerp-5 fadeIn" action="#!" id="loginForm">
 
 
 
         <!-- Email -->
-        <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="이메일">
+        <input type="email" id="email" class="form-control mb-4" placeholder="이메일">
 
         <!-- Password -->
-        <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="비밀번호">
+        <input type="password" id="password" class="form-control mb-4" placeholder="비밀번호">
 
 
         <!-- Sign in button -->
@@ -110,22 +106,22 @@
     </div>
     <div class="register_div" style=" margin-left:13vw;margin-top:18vw;width: 22vw;">
       <!-- Default form register -->
-      <form class="text-center  p-5" action="#!">
+      <form class="text-center  p-5" id="signupForm">
 
 
         <div class="form-row mb-4">
           <div class="col">
             <!-- First name -->
-            <input type="text" id="name" class="form-control" placeholder="이름">
+            <input type="text" id="name1" class="form-control" placeholder="이름">
           </div>
 
         </div>
 
         <!-- E-mail -->
-        <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="이메일">
+        <input type="email" id="email1" class="form-control mb-4" placeholder="이메일">
 
         <!-- Password -->
-        <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="비밀번호"
+        <input type="password" id="password1" class="form-control" placeholder="비밀번호"
           aria-describedby="defaultRegisterFormPasswordHelpBlock">
 
 
@@ -149,6 +145,47 @@
     </div>
   </div>
   <!-- End your project here-->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="false">
+
+    <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">회원가입 성공!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-dark-green" data-dismiss="modal" id="signupS">로그인 하러가기</button>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="false">
+
+    <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">로그인 성공!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-dark-green" data-dismiss="modal" id="signupP">플래너로 이동하기</button>
+
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- JQuery -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -167,35 +204,22 @@
       $("#customSwitches").click(function () {
         if (flag == true) {
           console.log(true);
-
           $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_dark.jpg?raw=true)");
-
-
-
           flag = false;
-
-
         }
         else {
           console.log(false);
-
           $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true)");
-
           flag = true;
         }
-
       });
       $('#login_tag').click(function () {
         $(".main_div").addClass('fadeOut mb1', function () {
-
         });
         setTimeout(function () {
           $(".login_div").css('display', 'block');
         }, 1200);
-
-
       });
-
       $('#register_tag').click(function () {
         $(".login_div").css('display', 'none');
         setTimeout(function () {
@@ -203,6 +227,61 @@
         }, 200);
       })
     });
+    $('#signupS').click(function () {
+      $(".register_div").css('display', 'none');
+      setTimeout(function () {
+        $(".login_div").css('display', 'block');
+      }, 300);
+    })
+
+
+    $('#signupP').click(function () {
+      location.href = "/api/user/mypage";
+
+    })
+
+    $(function () {
+      $("#signupForm").submit((event) => {
+        event.preventDefault();
+        const name = $("#name1").val();
+        const email = $("#email1").val();
+        const password = $("#password1").val();
+
+        console.log(name, email, password);
+        $.ajax({
+          url: "/api/user/signup",
+          type: "post",
+          data: { name, email, password }
+        }).done(() => {
+          //alert("성공");
+          $("#exampleModalCenter").modal();
+
+        })
+          .fail((request, status, error) => {
+            alert(request.responseText);
+          });
+      });
+
+    });
+    $(function () {
+      $("#loginForm").submit((event) => {
+        event.preventDefault();
+        const email = $("#email").val();
+        const password = $("#password").val();
+        $.ajax({
+          url: "/api/user/login",
+          type: "post",
+          data: { email, password }
+        }).done(() => {
+          $("#exampleModalCenter2").modal();
+        })
+          .fail((request, status, error) => {
+            alert(request.responseText);
+          });
+
+      })
+    })
+
 
   </script>
 </body>

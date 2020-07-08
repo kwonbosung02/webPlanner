@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>001101</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+        rel="stylesheet" />
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascr 
+    src=" https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
+
+<style>
+    body {
+        background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true");
+
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 100%;
+        /* ges Hoehe der Seite -> weitere Hoehenangaben werden relativ hierzu ausgewertet */
+        overflow: hidden;
+        /*  hide scrollbars */
+        opacity: 1.0;
+        -webkit-transition: background 0.5s linear;
+        -moz-transition: background 0.5s linear;
+        -o-transition: background 0.5s linear;
+        -ms-transition: background 0.5s linear;
+        transition: background 0.5s linear;
+        font-family: 'Sunflower', sans-serif;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgb(56, 56, 56);
+
+    }
+
+    a:hover {
+        color: #4a7846;
+    }
+
+    .login_div {
+        display: none;
+        ;
+        position: absolute;
+    }
+
+    .display {
+        display: block;
+    }
+
+    .register_div {
+        display: none;
+        position: absolute;
+    }
+
+    #timedate {
+        font: small-caps lighter 43px/150% "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+        text-align: left;
+        width: 50%;
+        margin: 40px auto;
+        color: black;
+        
+        padding: 20px;
+    }
+</style>
+
+<body onload="initClock()">
+    마이페이지
+
+
+    
+  <div id="timedate">
+    <a id="y">0</a><a>년</a>
+    <a id="mon">January</a>
+    <a id="d">1</a><a>일</a>
+    <br />
+    <a id="h">12</a> :
+    <a id="m">00</a>:
+    <a id="s">00</a>
+   
+  </div>
+
+
+    <p>id <%= user.email %></p>
+    <button type="button" class="btn btn-yellow" style="margin-left: 3vh;"
+        onclick="location.href='/api/subject/new'">post</button>
+
+    <div class="row row-cols-1 row-cols-md-3" style="margin-left:1vh;margin-right:1vh;">
+
+        <% result.forEach(subject => { %>
+        <div class="col mb-4">
+            <div class="card h-100">
+                <!--Card image-->
+                <div class="view overlay">
+
+                    <a href="#!">
+                        <div class="mask rgba-white-slight"></div>
+                    </a>
+                </div>
+
+                <!--Card content-->
+                <div class="card-body">
+
+                    <!--Title-->
+                    <h4 class="card-title"><%= subject.title %></h4>
+                    <!--Text-->
+                    <p class="card-text"><%= subject.studyTime%></p>
+                    <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+                    <button type="button" class="btn btn-yellow btn-md"
+                        onclick="location.href='/api/subject/<%=subject._id%>'">Read more</button>
+                    
+                </div>
+
+            </div>
+            <!-- Card -->
+        </div>
+
+        <% }) %>
+
+    </div>
+
+
+
+    <div class="flex-center flex-column">
+        <h5 class="animated fadeIn mb-3"></h5>
+        <!--<p class="animated fadeIn text-muted">MDB Team</p>-->
+        <div class="custom-control custom-switch animated fadeIn" style="margin-left: -38vw;margin-bottom: -44vw;">
+            <input type="checkbox" class="custom-control-input" id="customSwitches" />
+            <label class="custom-control-label" for="customSwitches">Darkmode</label>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+    <script>
+        var flag = true;
+        $("#customSwitches").click(function () {
+            if (flag == true) {
+                console.log(true);
+                $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_dark.jpg?raw=true)");
+                flag = false;
+            }
+            else {
+                console.log(false);
+                $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true)");
+                flag = true;
+            }
+        });
+
+        Number.prototype.pad = function (n) {
+            for (var r = this.toString(); r.length < n; r = 0 + r);
+            return r;
+        };
+
+        function updateClock() {
+            var now = new Date();
+            var 
+                sec = now.getSeconds(),
+                min = now.getMinutes(),
+                hou = now.getHours(),
+                mo = now.getMonth(),
+                dy = now.getDate(),
+                yr = now.getFullYear();
+            var months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+            var tags = ["mon", "d", "y", "h", "m", "s"],
+                corr = [months[mo], dy, yr, hou.pad(2), min.pad(2), sec.pad(2)];
+            for (var i = 0; i < tags.length; i++)
+                document.getElementById(tags[i]).firstChild.nodeValue = corr[i];
+        }
+
+        function initClock() {
+            updateClock();
+            window.setInterval("updateClock()", 1);
+        }
+
+
+
+        $(function(){
+        $("#deleteBtn").on('click',()=>{
+          const result = confirm("삭제하시겠습니까?");
+          if(result){
+            console.log("삭제");
+            $.ajax({
+              url:'/api/music/<%=result._id %>',
+              type:'delete'
+            }).done(()=>{
+              location.href="/api/music";
+            }).fail((request,status,error)=>{
+              alert(request.responseText);
+            })
+          }
+       
+        })
+      })
+
+      
+// END CLOCK SCRIPT
+
+    </script>
+</body>
+
+</html>
