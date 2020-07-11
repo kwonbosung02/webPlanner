@@ -15,7 +15,7 @@ const { name, email, password } = req.body;
   console.log(password);
   
   userModel.findOne({ email }, (err, result) => {
-    if (err) return res.status(500).send("사용자 조회시 오류가 발생했습니다");
+    if (err) return res.status(500).send("사용자 조회시    발생했습니다");
     if (result) return res.status(409).send("이미 사용중인 이메일 입니다");
 
     const saltRounds = 10;
@@ -37,9 +37,10 @@ const { name, email, password } = req.body;
 
 const login = (req, res) => {
   const { email, password } = req.body;
+  console.log("로그인 작동");
   if (!email || !password)
     return res.status(400).send("필수값이 입력되지 않았습니다");
-  userModel.findOne({ email }, (err, user) => {
+    userModel.findOne({ email }, (err, user) => {
     if (err) return res.status(500).send("로그인시 오류가 발생했습니다");
     if (!user) return res.status(404).send("가입되지 않은 계정입니다");
 
@@ -49,8 +50,16 @@ const login = (req, res) => {
 
       const token = jwt.sign(user._id.toHexString(), "secretKey");
       userModel.findByIdAndUpdate(user._id, { token }, (err, result) => {
-        if (err) return res.status(500).send("로그인 시 에러가 발생했습니다");
+        console.log("토큰 업데이트됨");
+        if (err) {
+          console.error(err);
+          return res.status(500).send("로그인 시 에러가 발생했습니다");
+        }
+        //res.cookie("token", token, {signed: true, httpOnly: false ,withCredentials: true, credentials: 'include'});
         res.cookie("token", token, { httpOnly: true });
+        console.log("---로그인 함수에서 만들어진 토큰---")
+        console.log(token);
+        console.log("---------------------------------")
         res.json(result);
       });
     });
@@ -60,46 +69,54 @@ const login = (req, res) => {
 
 const checkAuth = (req, res, next) => {
   res.locals.user = null;
-  //
-  const token = req.cookies.token;
+  console.log("checkAuth 상단")
+  var token = req.cookies.token;
+  console.log(token);
   if (!token) {
     if (
       req.url === "/" ||
-      req.url === "/api/user" ||
+      req.url === "/api/user/signup" ||
+      req.url === "/api/user/login" ||
       req.url === "/api/user/mypage"
     )
     
+  
+    
     return next();
-
-    else return res.render("/");
+    
+    else return res.render("index");
   
   } 
 
-
+  console.log("인증?")
   jwt.verify(token, "secretKey", (err, _id) => {
     if (err) {
       res.clearCookie("token");
-      return res.render("/");
+      return res.render("index");
     }
+
     userModel.findOne({ _id, token }, (err, user) => {
       if (err) return res.status(500);
-      if (!user) return res.render("/");
-      res.locals.user = { email: user.email, role: user.role };
+      if (!user) return res.render("index ");
+      console.log(user);
+  
+      res.locals.user = { email: user.email, role: user.role, name:user.name };
+
+      
       next();
     });
   });
 };
 
 const showMypage = (req,res) =>{
-  
-  SubjectModel.find((err,result)=>{
+  const key = String(req.query.email);
+  console.log(key);
+  SubjectModel.find({user:key},(err,result)=>{
     if(err) return res.status(500).end();
-    //res.json(result)
-    console.log(result);
-
+  
     res.render("mypage",{result});
     
-}).sort({ _id: -1 });;
+}).sort({ _id: -1 });
 
 //res.render("mypage");
 

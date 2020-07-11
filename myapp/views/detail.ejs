@@ -1,13 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>001101</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+        rel="stylesheet" />
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <h1>과목 명 : <%=result.title%></h1><br>
-    <h1>공부할 시간 : <%=result.studyTime%></h1><br>
-    <h1>할 과제 : <%=result.note%></h1>
+<style>
+    body {
+        background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true");
+
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 100%;
+        /* ges Hoehe der Seite -> weitere Hoehenangaben werden relativ hierzu ausgewertet */
+        overflow: hidden;
+        /*  hide scrollbars */
+        opacity: 1.0;
+        -webkit-transition: background 0.5s linear;
+        -moz-transition: background 0.5s linear;
+        -o-transition: background 0.5s linear;
+        -ms-transition: background 0.5s linear;
+        transition: background 0.5s linear;
+        font-family: 'Sunflower', sans-serif;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgb(56, 56, 56);
+
+    }
+
+    a:hover {
+        color: #4a7846;
+    }
+
+    .login_div {
+        display: none;
+        ;
+        position: absolute;
+    }
+
+    .display {
+        display: block;
+    }
+
+    .register_div {
+        display: none;
+        position: absolute;
+    }
+
+    #timedate {
+        font: small-caps lighter 43px/150% "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+        text-align: left;
+        width: 50%;
+        margin: 40px auto;
+        color: rgb(56, 56, 56);
+
+        padding: 20px;
+    }
+
+    .wrapper {
+        width: 800px;
+        margin: 30px auto;
+
+        text-align: center;
+    }
+
+
+    #seconds,
+    #tens {
+        font-size: 2em;
+    }
+</style>
+
+<body onload="initClock()">
+
+    <div id="timedate" style="margin-left: 1vw;margin-top: 1vw;">
+        <a id="y">0</a><a>년</a>
+        <a id="mon">1</a>
+        <a id="d">1</a><a>일</a>
+        <br />
+        <a id="h">12</a>시
+        <a id="m">00</a>분
+        <a id="s">00</a>초
+    </div>
+
+
+    <a>과목 명 : <%=result.title%></a><br>
+    <a>공부할 시간 : <%=result.studyTime%></a><br>
+    <a>할 과제 : <%=result.note%></a>
+    <div class="wrapper">
+
+        <p><span id="seconds">00</span>:<span id="tens">00</span></p>
+        <button id="button-start" class="btn btn-dark-green btn-sm">시작</button>
+        <button id="button-stop" class="btn btn-dark-green btn-sm">정지</button>
+        <button id="button-reset" class="btn btn-dark-green btn-sm">초기화</button>
+        <button id="button-register" class="btn btn-dark-green btn-sm">등록</button>
+    </div>
+
+    <div class="custom-control custom-switch animated fadeIn"
+        style="position:absolute; margin-top: 32vw;margin-left: 2vw;">
+        <input type="checkbox" class="custom-control-input" id="customSwitches" />
+        <label class="custom-control-label" for="customSwitches">다크모드</label>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
+    <script>
+        var flag = true;
+
+        $(function () {
+            $("#customSwitches").click(function () {
+                if (flag == true) {
+                    console.log(true);
+                    $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_dark.jpg?raw=true)");
+                    flag = false;
+                }
+                else {
+                    console.log(false);
+                    $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light.jpg?raw=true)");
+                    flag = true;
+                }
+
+            })
+
+
+        });
+
+        Number.prototype.pad = function (n) {
+            for (var r = this.toString(); r.length < n; r = 0 + r);
+            return r;
+        };
+
+        function updateClock() {
+            var now = new Date();
+            var
+                sec = now.getSeconds(),
+                min = now.getMinutes(),
+                hou = now.getHours(),
+                mo = now.getMonth(),
+                dy = now.getDate(),
+                yr = now.getFullYear();
+            var months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+            var tags = ["mon", "d", "y", "h", "m", "s"],
+                corr = [months[mo], dy, yr, hou.pad(2), min.pad(2), sec.pad(2)];
+            for (var i = 0; i < tags.length; i++)
+                document.getElementById(tags[i]).firstChild.nodeValue = corr[i];
+        }
+
+        function initClock() {
+            updateClock();
+            window.setInterval("updateClock()", 1);
+        }
+
+
+
+
+        $(function () {
+            var seconds = 00;
+            var tens = 00;
+            var appendTens = $("#tens")
+            var appendSeconds = $("#seconds")
+            var buttonStart = $('#button-start');
+            var buttonStop = $('#button-stop');
+            var buttonReset = $('#button-reset');
+            var Interval;
+
+            $("#button-start").on('click', () => {
+
+                clearInterval(Interval);
+                Interval = setInterval(startTimer, 10);
+            });
+
+            $("#button-stop").on('click', () => {
+                console.log($("#seconds").text());
+                clearInterval(Interval);
+            });
+
+            $("#button-reset").on('click', () => {
+                clearInterval(Interval);
+                tens = "00";
+                seconds = "00";
+                $("#tens").html(tens);
+                $("#seconds").html(seconds);
+            });
+            var checksum_re = 0;
+            var time= 0;
+            $("#button-register").on('click', () => {
+                time = $("#seconds").text();
+                console.log("시간 설정");
+                $.ajax({
+                    url: "/api/subject/settime",
+                    type: "put",
+                    data: {time,id:"<%=result._id%>"}
+                }).done(() => {
+                    alert("성공");
+                   
+                })
+                    .fail((request, status, error) => {
+                        alert(request.responseText);
+                    });
+            });
+
+
+
+
+            function startTimer() {
+                tens++;
+
+                if (tens < 9) {
+                    $("#tens").html("0" + tens);
+
+                }
+
+                if (tens > 9) {
+                    $("#tens").html(tens);
+
+                }
+
+                if (tens > 99) {
+
+                    seconds++;
+                    $("#seconds").html("0" + seconds);
+                    tens = 0;
+                    $("#tens").html("0" + 0);
+                }
+
+                if (seconds > 9) {
+                    $("#seconds").html(seconds);
+                }
+
+            }
+
+
+        });
+    </script>
 </body>
+
 </html>

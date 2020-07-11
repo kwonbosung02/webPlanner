@@ -101,7 +101,7 @@
             data: { title, studytime, note, name},
           })
             .done(() => {
-              location.href = "/api/user/mypage";
+              location.href = "/api/user/mypage?email="+"<%= user.email%>";
             })
             .fail((requst, status, error) => {
               alert(requst.responseText);

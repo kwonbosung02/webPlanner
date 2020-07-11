@@ -140,7 +140,7 @@
       <!--<p class="animated fadeIn text-muted">MDB Team</p>-->
       <div class="custom-control custom-switch animated fadeIn" style="margin-left: -38vw;margin-bottom: -44vw;">
         <input type="checkbox" class="custom-control-input" id="customSwitches" />
-        <label class="custom-control-label" for="customSwitches">Darkmode</label>
+        <label class="custom-control-label" for="customSwitches">다크모드</label>
       </div>
     </div>
   </div>
@@ -190,8 +190,7 @@
   <!-- JQuery -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Bootstrap tooltips -->
-  <script type="text/javascr 
-      src=" https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -233,25 +232,27 @@
         $(".login_div").css('display', 'block');
       }, 300);
     })
-
-
+    
     $('#signupP').click(function () {
-      location.href = "/api/user/mypage";
-
+      const e = $("#email").val();
+      console.log(email);
+      location.href = "/api/user/mypage"+"?email="+e;
+      console.log("------------------------------")
+      console.log("/api/user/mypage"+"?email="+e);
     })
 
     $(function () {
       $("#signupForm").submit((event) => {
         event.preventDefault();
         const name = $("#name1").val();
-        const email = $("#email1").val();
+        
         const password = $("#password1").val();
 
         console.log(name, email, password);
         $.ajax({
           url: "/api/user/signup",
           type: "post",
-          data: { name, email, password }
+          data: { name, email, password } 
         }).done(() => {
           //alert("성공");
           $("#exampleModalCenter").modal();
@@ -268,10 +269,12 @@
         event.preventDefault();
         const email = $("#email").val();
         const password = $("#password").val();
+        console.log(email);
         $.ajax({
           url: "/api/user/login",
           type: "post",
           data: { email, password }
+          
         }).done(() => {
           $("#exampleModalCenter2").modal();
         })

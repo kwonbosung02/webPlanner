@@ -12,5 +12,6 @@ router.use('/', function (req, res, next) {
 router.get("/new",ctrl.showCreatePage);
 router.get('/:id',ctrl.checkId, ctrl.detail);
 router.post("/",ctrl.create);
+router.put("/settime",ctrl.updateTime);
 module.exports = router;
 

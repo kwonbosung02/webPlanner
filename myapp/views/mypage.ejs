@@ -42,7 +42,7 @@
         background-size: cover;
         height: 100%;
         /* ges Hoehe der Seite -> weitere Hoehenangaben werden relativ hierzu ausgewertet */
-        overflow: hidden;
+
         /*  hide scrollbars */
         opacity: 1.0;
         -webkit-transition: background 0.5s linear;
@@ -51,6 +51,7 @@
         -ms-transition: background 0.5s linear;
         transition: background 0.5s linear;
         font-family: 'Sunflower', sans-serif;
+        background-attachment: fixed;
     }
 
     a {
@@ -83,57 +84,72 @@
         text-align: left;
         width: 50%;
         margin: 40px auto;
-        color: black;
-        
+        color: rgb(56, 56, 56);
+
         padding: 20px;
+    }
+
+    .wrapper {
+        width: 800px;
+        margin: 30px auto;
+
+        text-align: center;
+    }
+
+
+    #seconds,
+    #tens {
+        font-size: 2em;
     }
 </style>
 
 <body onload="initClock()">
-    마이페이지
 
 
-    
-  <div id="timedate">
-    <a id="y">0</a><a>년</a>
-    <a id="mon">January</a>
-    <a id="d">1</a><a>일</a>
-    <br />
-    <a id="h">12</a> :
-    <a id="m">00</a>:
-    <a id="s">00</a>
-   
-  </div>
 
 
-    <p>id <%= user.email %></p>
-    <button type="button" class="btn btn-yellow" style="margin-left: 3vh;"
-        onclick="location.href='/api/subject/new'">post</button>
+    <div id="timedate" style="margin-left: 1vw;margin-top: 1vw;">
+        <a id="y">0</a><a>년</a>
+        <a id="mon">1</a>
+        <a id="d">1</a><a>일</a>
+        <br />
+        <a id="h">12</a>시
+        <a id="m">00</a>분
+        <a id="s">00</a>초
+    </div>
+    <div class="custom-control custom-switch animated fadeIn" style="position:absolute; margin-top: -3vw;">
+        <c style="margin-right: 3vw;">반갑습니다 <%= user.name %>님!</c>
+        <input type="checkbox" class="custom-control-input" id="customSwitches" />
+        <label class="custom-control-label" for="customSwitches">다크모드</label>
+    </div>
 
     <div class="row row-cols-1 row-cols-md-3" style="margin-left:1vh;margin-right:1vh;">
 
         <% result.forEach(subject => { %>
         <div class="col mb-4">
-            <div class="card h-100">
+            <div class="card h-100" style="background-color:rgba(229,224,225,0.3);">
                 <!--Card image-->
-                <div class="view overlay">
 
-                    <a href="#!">
-                        <div class="mask rgba-white-slight"></div>
-                    </a>
-                </div>
 
                 <!--Card content-->
-                <div class="card-body">
+                <div class="card-body" style="background-color:rgba(229,224,225,0.3);">
 
                     <!--Title-->
-                    <h4 class="card-title"><%= subject.title %></h4>
+                    <h4 class="card-title" style="color: rgb(56, 56, 56);"><%= subject.title %></h4>
                     <!--Text-->
-                    <p class="card-text"><%= subject.studyTime%></p>
+                    <p class="card-text" style="color: rgb(56, 56, 56);">공부할 목표시간 :
+                        <%= subject.studyTime%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 과제 :
+                        <%=subject.note%></p>
+
+
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-                    <button type="button" class="btn btn-yellow btn-md"
-                        onclick="location.href='/api/subject/<%=subject._id%>'">Read more</button>
-                    
+                    <button type="button" class="btn btn-dark-green btn-sm" style="margin-top:0%" ;
+                        onclick="location.href='/api/subject/<%=subject._id%>'">학습하기</button>
+
+                    <div
+                        style="width:80%;height: 27%; background-color:#C7C9C7 ;opacity:0.3;float: right;margin-left: 0;border-radius: 3px;">
+
+                    </div>
                 </div>
 
             </div>
@@ -141,26 +157,99 @@
         </div>
 
         <% }) %>
+        <div class="wrapper">
+
+            <p><span id="seconds">00</span>:<span id="tens">00</span></p>
+            <button id="button-start" class="btn btn-dark-green btn-sm">Start</button>
+            <button id="button-stop" class="btn btn-dark-green btn-sm">Stop</button>
+            <button id="button-reset" class="btn btn-dark-green btn-sm">Reset</button>
+        </div>
 
     </div>
 
 
 
-    <div class="flex-center flex-column">
-        <h5 class="animated fadeIn mb-3"></h5>
-        <!--<p class="animated fadeIn text-muted">MDB Team</p>-->
-        <div class="custom-control custom-switch animated fadeIn" style="margin-left: -38vw;margin-bottom: -44vw;">
-            <input type="checkbox" class="custom-control-input" id="customSwitches" />
-            <label class="custom-control-label" for="customSwitches">Darkmode</label>
+
+    </div>
+
+    <!--<button type="button" class="btn btn-yellow" style="margin-left: 3vh;"
+        onclick="location.href='/api/subject/new'">등록</button>
+    -->
+    <button type="button" class="btn btn-dark-green btn-md" data-toggle="modal" data-target="#exampleModalCenter"
+        style="margin-left: 3vh;">등록</button>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" data-backdrop="false"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">새로운 등록!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createForm">
+                        <div style="margin-top: -1vw;;">
+                            <div class="md-form">
+                                <input type="text" id="title" class="form-control" required />
+                                <label for="과목명">과목명</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="text" id="studytime" class="form-control" required />
+                                <label for="공부할 시간">공부할 시간</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="text" id="note" class="form-control" required />
+                                <label for="공부할 내용">공부할 내용</label>
+                            </div>
+                            <button type="submit" class="btn btn-dark-green btn-md" style="width:96%;font-size:0.8vw">
+                                저장
+                            </button>
+                        </div>
+                </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
         </div>
     </div>
     </div>
 
-
-
-
-
     <script>
+
+        $(function () {
+            $("#createForm").submit((event) => {
+                event.preventDefault();
+                const title = $("#title").val();
+                const studytime = $("#studytime").val();
+                const note = $("#note").val();
+                const name = "<%= user.email%>";
+
+                console.log(title, studytime, note, name);
+
+                $.ajax({
+                    url: "/api/subject",
+                    type: "post",
+                    data: { title, studytime, note, name },
+                })
+                    .done(() => {
+                        location.href = "/api/user/mypage?email=" + "<%= user.email%>";
+                    })
+                    .fail((requst, status, error) => {
+                        alert(requst.responseText);
+                    });
+            });
+        });
+
         var flag = true;
         $("#customSwitches").click(function () {
             if (flag == true) {
@@ -182,7 +271,7 @@
 
         function updateClock() {
             var now = new Date();
-            var 
+            var
                 sec = now.getSeconds(),
                 min = now.getMinutes(),
                 hou = now.getHours(),
@@ -203,27 +292,65 @@
 
 
 
-        $(function(){
-        $("#deleteBtn").on('click',()=>{
-          const result = confirm("삭제하시겠습니까?");
-          if(result){
-            console.log("삭제");
-            $.ajax({
-              url:'/api/music/<%=result._id %>',
-              type:'delete'
-            }).done(()=>{
-              location.href="/api/music";
-            }).fail((request,status,error)=>{
-              alert(request.responseText);
-            })
-          }
-       
-        })
-      })
 
-      
-// END CLOCK SCRIPT
+        $(function () {
+            var seconds = 00;
+            var tens = 00;
+            var appendTens = $("#tens")
+            var appendSeconds = $("#seconds")
+            var buttonStart = $('#button-start');
+            var buttonStop = $('#button-stop');
+            var buttonReset = $('#button-reset');
+            var Interval;
 
+            $("#button-start").on('click', () => {
+
+                clearInterval(Interval);
+                Interval = setInterval(startTimer, 10);
+            });
+
+            $("#button-stop").on('click', () => {
+                clearInterval(Interval);
+            });
+
+            $("#button-reset").on('click', () => {
+                clearInterval(Interval);
+                tens = "00";
+                seconds = "00";
+                $("#tens").html(tens);
+                $("#seconds").html(seconds);
+            });
+
+
+            function startTimer() {
+                tens++;
+
+                if (tens < 9) {
+                    $("#tens").html("0" + tens);
+
+                }
+
+                if (tens > 9) {
+                    $("#tens").html(tens);
+
+                }
+
+                if (tens > 99) {
+
+                    seconds++;
+                    $("#seconds").html("0" + seconds);
+                    tens = 0;
+                    $("#tens").html("0" + 0);
+                }
+
+                if (seconds > 9) {
+                    $("#seconds").html(seconds);
+                }
+
+            }
+
+
+        });
     </script>
 </body>
 

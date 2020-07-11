@@ -45,7 +45,29 @@ const checkId= (req,res,next)=>{
     }
     next();
 }
+const updateTime =(req,res)=>{
+    const {time,id} = req.body;
 
+    console.log(time,id);
+    SubjectModel.findById(id,(err,result)=>{
+        if(err) return res.status(500).end();
+        if(!result) return res.status(404).end();
+        var uptime = parseInt(result.studiedTime,10);
+        console.log(result.studiedTime);
+        uptime = uptime + parseInt(time);
 
-module.exports = {showCreatePage,create,checkId,detail};
+        console.log(uptime);
+        SubjectModel.findByIdAndUpdate(id,{studiedTime:uptime},(err,result)=>{
+            console.log("time 업데이트 완료");
+            if (err) {
+                console.error(err);
+                return res.status(500).send("에러가 발생했습니다");
+              }
+              res.json(result);
+        });
+    });
+
+};
+
+module.exports = {showCreatePage,create,checkId,detail,updateTime};
 
