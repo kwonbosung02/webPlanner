@@ -157,16 +157,6 @@
         </div>
 
         <% }) %>
-        <div class="wrapper">
-
-            <p><span id="seconds">00</span>:<span id="tens">00</span></p>
-            <button id="button-start" class="btn btn-dark-green btn-sm">Start</button>
-            <button id="button-stop" class="btn btn-dark-green btn-sm">Stop</button>
-            <button id="button-reset" class="btn btn-dark-green btn-sm">Reset</button>
-        </div>
-
-    </div>
-
 
 
 
@@ -293,64 +283,7 @@
 
 
 
-        $(function () {
-            var seconds = 00;
-            var tens = 00;
-            var appendTens = $("#tens")
-            var appendSeconds = $("#seconds")
-            var buttonStart = $('#button-start');
-            var buttonStop = $('#button-stop');
-            var buttonReset = $('#button-reset');
-            var Interval;
-
-            $("#button-start").on('click', () => {
-
-                clearInterval(Interval);
-                Interval = setInterval(startTimer, 10);
-            });
-
-            $("#button-stop").on('click', () => {
-                clearInterval(Interval);
-            });
-
-            $("#button-reset").on('click', () => {
-                clearInterval(Interval);
-                tens = "00";
-                seconds = "00";
-                $("#tens").html(tens);
-                $("#seconds").html(seconds);
-            });
-
-
-            function startTimer() {
-                tens++;
-
-                if (tens < 9) {
-                    $("#tens").html("0" + tens);
-
-                }
-
-                if (tens > 9) {
-                    $("#tens").html(tens);
-
-                }
-
-                if (tens > 99) {
-
-                    seconds++;
-                    $("#seconds").html("0" + seconds);
-                    tens = 0;
-                    $("#tens").html("0" + 0);
-                }
-
-                if (seconds > 9) {
-                    $("#seconds").html(seconds);
-                }
-
-            }
-
-
-        });
+     
     </script>
 </body>
 

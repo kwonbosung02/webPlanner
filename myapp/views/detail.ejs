@@ -29,7 +29,7 @@
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        height: 100%;
+
         /* ges Hoehe der Seite -> weitere Hoehenangaben werden relativ hierzu ausgewertet */
         overflow: hidden;
         /*  hide scrollbars */
@@ -40,6 +40,7 @@
         -ms-transition: background 0.5s linear;
         transition: background 0.5s linear;
         font-family: 'Sunflower', sans-serif;
+
     }
 
     a {
@@ -72,16 +73,20 @@
         text-align: left;
         width: 50%;
         margin: 40px auto;
-        color: rgb(56, 56, 56);
+        color: rgb(73, 73, 73);
 
         padding: 20px;
     }
 
     .wrapper {
-        width: 800px;
-        margin: 30px auto;
 
+        float: left;
         text-align: center;
+        position: absolute;
+        margin-left: 34vw;
+        margin-top: -11vw;
+        font-size: 2vw;
+
     }
 
 
@@ -89,11 +94,31 @@
     #tens {
         font-size: 2em;
     }
+
+    .menutable {
+        font-size: 1.1vw;
+        margin-left: 2vw;
+        margin-top: 1vw;
+    }
+
+    .raddiv {
+        width: 20vw;
+        height: 1vw;
+        background-color: #ebebeb;
+
+
+    }
+
+    .raddivin {
+        height: 100%;
+        width: 0%;
+        background-color: #388e3c;
+    }
 </style>
 
 <body onload="initClock()">
 
-    <div id="timedate" style="margin-left: 1vw;margin-top: 1vw;">
+    <div id="timedate" style="margin-left: 1vw;margin-top: 10vw;">
         <a id="y">0</a><a>년</a>
         <a id="mon">1</a>
         <a id="d">1</a><a>일</a>
@@ -102,11 +127,19 @@
         <a id="m">00</a>분
         <a id="s">00</a>초
     </div>
+    <div class="menutable">
+        <a>과목 명 : &nbsp;&nbsp;&nbsp; <%=result.title%></a><br><br>
+        <a>목표 과제 : &nbsp;&nbsp;&nbsp; <%=result.note%></a><br><br>
+        <a>공부할 시간 : &nbsp;&nbsp;&nbsp; <%=result.studyTime%> 시간</a><br><br>
+        <a>진행도(퍼센트) : &nbsp;&nbsp;</a><a id="pers">00</a>
+        <div class="raddiv">
+            <div class="raddivin">
+
+            </div>
+        </div>
+    </div>
 
 
-    <a>과목 명 : <%=result.title%></a><br>
-    <a>공부할 시간 : <%=result.studyTime%></a><br>
-    <a>할 과제 : <%=result.note%></a>
     <div class="wrapper">
 
         <p><span id="seconds">00</span>:<span id="tens">00</span></p>
@@ -116,10 +149,72 @@
         <button id="button-register" class="btn btn-dark-green btn-sm">등록</button>
     </div>
 
+    <div class="dropdown">
+
+        <!--Trigger-->
+        <button class="btn dropdown-toggle btn-link" type="button" id="dropdownMenu1" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" style="margin-left: 0.1vw;margin-top: 0.5vw;">설정</button>
+
+
+        <!--Menu-->
+        <div class="dropdown-menu " style="margin-left: 1vw;">
+            <a class="dropdown-item" href="http://localhost:3000/api/user/mypage?email=<%=user.email%>"
+                style="font-size:0.8vw;">이전 페이지로 돌아가기</a>
+
+            <a class="dropdown-item" id="delete" href="#" style="font-size:0.8vw;color:red">과목 삭제하기</a>
+
+        </div>
+    </div>
+
     <div class="custom-control custom-switch animated fadeIn"
-        style="position:absolute; margin-top: 32vw;margin-left: 2vw;">
+        style="position:absolute; margin-top: 7vw;margin-left: 2vw;">
         <input type="checkbox" class="custom-control-input" id="customSwitches" />
         <label class="custom-control-label" for="customSwitches">다크모드</label>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="mod" tabindex="-1" role="dialog" data-backdrop="false"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="overflow: hidden;">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">등록 완료!</h5>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-dark-green btn-block" data-dismiss="modal"
+                        onClick="history.go(0);">페이지 리로드</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="del" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" style="overflow: hidden;">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">삭제합니까?</h5>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="deletebt" class="btn btn-primary btn-red btn-block"
+                        data-dismiss="modal">삭제하기</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -136,6 +231,15 @@
         var flag = true;
 
         $(function () {
+
+            console.log(parseFloat('<%=result.studiedTime %>'));
+            console.log(parseFloat('<%=result.studyTime %>') * 3600);
+            console.log(parseFloat(('<%=result.studiedTime %>') / (parseFloat('<%=result.studyTime %>') * 3600)) * 100)
+            var get = parseFloat(('<%=result.studiedTime %>') / (parseFloat('<%=result.studyTime %>') * 3600)) * 100;
+            $(".raddivin").css({ "width": get + "%" });
+            $("#pers").html(get.toFixed(2));
+
+            // / (parseFloat('<%=result.studyTime%>')*60*60)) * 100
             $("#customSwitches").click(function () {
                 if (flag == true) {
                     console.log(true);
@@ -177,9 +281,8 @@
         function initClock() {
             updateClock();
             window.setInterval("updateClock()", 1);
+
         }
-
-
 
 
         $(function () {
@@ -201,6 +304,7 @@
             $("#button-stop").on('click', () => {
                 console.log($("#seconds").text());
                 clearInterval(Interval);
+
             });
 
             $("#button-reset").on('click', () => {
@@ -210,23 +314,41 @@
                 $("#tens").html(tens);
                 $("#seconds").html(seconds);
             });
+
             var checksum_re = 0;
-            var time= 0;
+            var time = 0;
             $("#button-register").on('click', () => {
                 time = $("#seconds").text();
                 console.log("시간 설정");
                 $.ajax({
                     url: "/api/subject/settime",
                     type: "put",
-                    data: {time,id:"<%=result._id%>"}
+                    data: { time, id: "<%=result._id%>" }
                 }).done(() => {
-                    alert("성공");
-                   
+                    $('#mod').modal();
+
+                    //console.log("<%=result.studiedTime%>");
+
                 })
                     .fail((request, status, error) => {
                         alert(request.responseText);
                     });
             });
+            $("#delete").on('click', () => {
+                $('#del').modal();
+            });
+            $("#deletebt").on('click', () => {
+                console.log("delete");
+                $.ajax({
+                    url: "/api/subject/remove/<%=result._id%>",
+                    type: "delete"
+                }).done(() => {
+                    location.href = "/api/user/mypage?email=" + "<%= user.email%>";
+                }).fail((requst, status, error) => {
+                    alert(requst.responseText);
+                });
+            });
+
 
 
 
