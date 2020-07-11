@@ -323,7 +323,7 @@
                 $.ajax({
                     url: "/api/subject/settime",
                     type: "put",
-                    data: { time, id: "<%=result._id%>" }
+                    data: { time, id: "<%=result._id%>" ,studytime: "<%=result.studyTime%>"}
                 }).done(() => {
                     $('#mod').modal();
 

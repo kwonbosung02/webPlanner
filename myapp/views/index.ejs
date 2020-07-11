@@ -241,11 +241,12 @@
       console.log("/api/user/mypage"+"?email="+e);
     })
 
+
     $(function () {
       $("#signupForm").submit((event) => {
         event.preventDefault();
         const name = $("#name1").val();
-        
+        const email = $("#email1").val();
         const password = $("#password1").val();
 
         console.log(name, email, password);
