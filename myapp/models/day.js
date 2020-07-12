@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
-const SubjectSchema = new mongoose.Schema({
-    title :{
+const DaySchema = new mongoose.Schema({
+    month :{
         type: String,
         required: true,
         trim: true
     },
-    user :{
+    day :{
         type: String,
         required: true,
         trim: true
     },
-    studyTime :{
+    memo :{
         type: String,
         required: true,
         trim : true
@@ -20,21 +20,26 @@ const SubjectSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    note:{
+    time:{
         type: String,
         required: true,
         trim : false
     },
-    studiedTime :{
+    subject:{
         type: String,
-        default:0
+        trim : false
     },
-    percent :{
-        type : String,
-        default:0
+    note:{
+        type: String,
+        trim : false
+    },
+    name:{
+        type: String,
+        trim : false,
+        required:true
     }
 });
 
 
-const Subject = mongoose.model("subject",SubjectSchema);
-module.exports = Subject;
+const Day = mongoose.model("day",DaySchema);
+module.exports = Day;

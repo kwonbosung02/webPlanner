@@ -77,7 +77,8 @@ const checkAuth = (req, res, next) => {
       req.url === "/" ||
       req.url === "/api/user/signup" ||
       req.url === "/api/user/login" ||
-      req.url === "/api/user/mypage"
+      req.url === "/api/user/mypage" ||
+      req.url === "/api/day"
     )
     
   
@@ -123,6 +124,18 @@ const showMypage = (req,res) =>{
 }
 
 
+const logout =(req,res) => {
+  const token = req.cookies.token;
+  jwt.verify(token,"secretKey",(err,_id)=>{
+    if(err) return res.status(500).send("로그아웃 시 오류가 발생했습니다");
+    userModel.findByIdAndUpdate(_id, {token: ""},(err,result)=>{
+        if(err) return res.status(500).send('로그아웃시 오류가 발생했습니다');
+        res.clearCookie("token");
+        res.redirect("/");
+    })
+  });
+  
+}
 
 
-module.exports = {signup,login, showMypage,checkAuth};
+module.exports = {signup,login, showMypage,checkAuth,logout};

@@ -46,7 +46,7 @@ const checkId= (req,res,next)=>{
     next();
 }
 const updateTime =(req,res)=>{
-    const {time,id} = req.body;
+    const {time,id,studytime} = req.body;
 
     console.log(time,id);
     SubjectModel.findById(id,(err,result)=>{
@@ -57,7 +57,10 @@ const updateTime =(req,res)=>{
         uptime = uptime + parseInt(time);
 
         console.log(uptime);
-        SubjectModel.findByIdAndUpdate(id,{studiedTime:uptime},(err,result)=>{
+        var get = parseFloat((uptime) / (parseFloat(studytime) * 3600)) * 100;
+        console.log(get);
+        SubjectModel.findByIdAndUpdate(id,{studiedTime:uptime,percent:get},(err,result)=>{
+         
             console.log("time 업데이트 완료");
             if (err) {
                 console.error(err);
@@ -68,6 +71,28 @@ const updateTime =(req,res)=>{
     });
 
 };
+const remove =(req,res)=>{
+    const id = req.params.id;
 
-module.exports = {showCreatePage,create,checkId,detail,updateTime};
+    console.log("remove");
+    console.log("-----------------------------------------------")
+    SubjectModel.findByIdAndDelete(id,(err,result)=>{
+        if(err) return res.status(500).end();
+        if(!result) return res.status(404).end();
+        res.json(result);
+    });
+}
+
+const clear = (req,res)=>{
+    const id = req.params.id;
+    console.log("clear start");
+    
+    SubjectModel.remove({user:id},(err,result)=>{
+        if(err) return res.status(500).end();
+        if(!result) return res.status(404).end();
+        res.json(result);
+    });
+
+}
+module.exports = {showCreatePage,create,checkId,detail,updateTime,remove,clear};
 

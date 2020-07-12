@@ -31,7 +31,7 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <style>
     body {
         background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light_nope.jpg?raw=true");
@@ -101,7 +101,8 @@
     #tens {
         font-size: 2em;
     }
-    .wdth{
+
+    .wdth {
         width: 0%;
     }
 </style>
@@ -111,7 +112,7 @@
 
 
 
-    <div id="timedate" style="margin-left: 1vw;margin-top: 1vw;">
+    <div id="timedate" style="margin-left: 1vw;margin-top: 1vw;margin-bottom: 3vw;">
         <a id="y">0</a><a>년</a>
         <a id="mon">1</a>
         <a id="d">1</a><a>일</a>
@@ -122,16 +123,37 @@
     </div>
     <div class="custom-control custom-switch animated fadeIn" style="position:absolute; margin-top: -3vw;">
         <c style="margin-right: 3vw;">반갑습니다 <%= user.name %>님!</c>
-        
-        <input type="checkbox" class="custom-control-input" id="customSwitches"/>
+
+        <input type="checkbox" class="custom-control-input" id="customSwitches" />
         <label class="custom-control-label" for="customSwitches">다크모드</label>
     </div>
-    <a style="margin-left: 2vw;margin-right:3vw;color: rgb(56, 56, 56);">로그아웃</a>
-    <div class="row row-cols-1 row-cols-md-3" style="margin-left:1vh;margin-right:1vh;">
+    <div class="custom-control custom-switch animated fadeIn" style="position:absolute; margin-top: -1.3vw;">
+        <a id="logout" style="color: rgb(56, 56, 56);">로그아웃하기</a>
+    </div>
+    <div style="width: 8%;height: 8%;position: absolute;margin-top: -11vw;margin-left: 19vw;">
+        <canvas id="doughnut-chart" width="10%" height="10%"></canvas>
 
+    </div>
+    <div style="position: absolute;margin-left: 18.79vw;margin-top: -7.9vw;">
+        <a id="percent_text" style="font-size:1.7vw; margin-left:2vw;">00</a><a style="font-size:0.9vw">퍼센트</a>
+    </div>
+
+    <div style="position: absolute;margin-left: 26.79vw;margin-top: -9.9vw;">
+        <a style="font-size:1.1vw;">하루 동안 나의 공부량</a>
+    </div>
+
+    <div>
+
+    </div>
+
+
+
+    <div class="row row-cols-1 row-cols-md-3" style="margin-left:1vh;margin-right:1vh;margin-top: 4vw;">
+        <% var full_time = 0%>
         <% result.forEach(subject => { %>
         <% var t = parseFloat(subject.percent); %>
-        
+        <% full_time = parseFloat(full_time) + parseFloat(subject.studiedTime)%>
+
         <div class="col mb-4">
             <div class="card h-100" style="background-color:rgba(229,224,225,0.3);">
                 <!--Card image-->
@@ -144,17 +166,17 @@
                     <h4 class="card-title" style="color: rgb(56, 56, 56);"><%= subject.title %></h4>
                     <!--Text-->
                     <p class="card-text" style="color: rgb(56, 56, 56);">공부할 목표시간 :
-                        <%= subject.studyTime%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 과제 :
+                        <%= subject.studyTime%>&nbsp;시간&nbsp;&nbsp;&nbsp;&nbsp; 과제 :
                         <%=subject.note%></p>
 
 
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <button type="button" class="btn btn-dark-green btn-sm" style="margin-top:0%" ;
                         onclick="location.href='/api/subject/<%=subject._id%>'">학습하기</button>
-                    
+
                     <div
                         style="width:80%;height: 27%;background-color: #dadada;float: right;margin-left: 0;border-radius: 3px;">
-                        <div style="height: 100%;background-color: #388e3c; ;width:<%=t%>%" class="wdth">
+                        <div style="height: 100%;background-color: #388e3c; ;width:<%=t%>%">
 
                         </div>
                     </div>
@@ -168,6 +190,7 @@
 
 
 
+
     </div>
 
     <!--<button type="button" class="btn btn-yellow" style="margin-left: 3vh;"
@@ -175,6 +198,12 @@
     -->
     <button type="button" class="btn btn-dark-green btn-md" data-toggle="modal" data-target="#exampleModalCenter"
         style="margin-left: 3vh;">등록</button>
+    <button type="button" class="btn btn-dark-green btn-md" data-toggle="modal" data-target="#finishmodal"
+        style="margin-left: 1vh;">하루 끝내기</button>
+
+    <button type="button" id="remindbtn" class="btn btn-dark-green btn-md" style="margin-left: 1vh;">나를 돌아보기</button>
+
+
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" data-backdrop="false"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -200,7 +229,7 @@
 
                             <div class="md-form">
                                 <input type="text" id="studytime" class="form-control" required />
-                                <label for="공부할 시간">공부할 시간</label>
+                                <label for="공부할 시간">공부할 시간(h)</label>
                             </div>
 
                             <div class="md-form">
@@ -211,8 +240,9 @@
                                 저장
                             </button>
                         </div>
+                    </form>
                 </div>
-                </form>
+
 
             </div>
             <div class="modal-footer">
@@ -222,10 +252,101 @@
     </div>
     </div>
 
+    <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" style="overflow: hidden;">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">로그아웃할까요?</h5>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="logoutbtn" class="btn btn-primary btn-dark-green btn-block"
+                        data-dismiss="modal">로그아웃</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="finishmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" data-backdrop="false" style="overflow: hidden;">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="exampleModalLongTitle">오늘 공부를 마감하겠습니까?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-dark-green btn-block" data-dismiss="modal"
+                        data-toggle="modal" data-target="#submitmodal">하루 끝내기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="submitmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" style="overflow: hidden;">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">하루 정리</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="submitForm"">
+                        <div style=" margin-top: -1vw;;">
+                        <div class="md-form" style="width:45%;float:left">
+                            <input type="text" id="month" class="form-control" required />
+                            <label for="월">월</label>
+
+                        </div>
+                        <div class="md-form" style="width:45%;float:right;margin-right:2vw">
+                            <input type="text" id="day" class="form-control" required />
+                            <label for="월">일</label>
+
+                        </div>
+
+                        <div class="md-form" style="width:92%;float:left;margin-top:-1vw">
+                            <input type="text" id="memo" class="form-control" required />
+                            <label for="한줄 메모">한줄 메모</label>
+
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-dark-green btn-block">수고하셨습니다</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    </div>
     <script>
 
         $(function () {
-            
+
             $("#createForm").submit((event) => {
                 event.preventDefault();
                 const title = $("#title").val();
@@ -247,22 +368,69 @@
                         alert(requst.responseText);
                     });
             });
+            $("#submitForm").submit((event) => {
+                event.preventDefault();
+                const month = $("#month").val();
+                const day = $("#day").val();
+                const memo = $("#memo").val();
+                const name = "<%= user.email%>";
+                const send_time = parseFloat("<%= full_time%>");
+                console.log(month, day, memo, name, send_time);
+
+                $.ajax({
+                    url: "/api/day",
+                    type: "post",
+                    data: { month, day, memo, name, send_time },
+                })
+                    .done(() => {
+                        $.ajax({
+                            url: "/api/subject/clear/<%=user.email%>",
+                            type: "delete"
+                        }).done(() => {
+                            location.href="/api/user/logout";
+                        }).fail((requst, status, error) => {
+                            alert(requst.responseText);
+                        });
+
+
+
+                    })
+                    .fail((requst, status, error) => {
+                        alert(requst.responseText);
+                    });
+
+            });
+
+
         });
 
         var flag = true;
+
+
         $("#customSwitches").click(function () {
             if (flag == true) {
                 console.log(true);
                 $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_dark_nope.jpg?raw=true)");
                 flag = false;
+                $("#doughnut-chart").css("opacity", "0.4");
             }
             else {
                 console.log(false);
                 $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light_nope.jpg?raw=true)");
                 flag = true;
+                $("#doughnut-chart").css("opacity", "1");
             }
         });
-
+        $("#logout").click(function () {
+            console.log("clicked")
+            $("#log").modal();
+        })
+        $("#logoutbtn").click(function () {
+            location.href = "/api/user/logout";
+        })
+        $(("#remindbtn")).click(function () {
+            location.href = "/api/day?email=" + "<%= user.email%>"
+        })
         Number.prototype.pad = function (n) {
             for (var r = this.toString(); r.length < n; r = 0 + r);
             return r;
@@ -289,10 +457,35 @@
             window.setInterval("updateClock()", 1);
         }
 
+        $(function () {
+            $("#percent_text").html(((parseFloat("<%= full_time%>") / 86400) * 100).toFixed(0));
+        });
 
 
+        new Chart(document.getElementById("doughnut-chart"), {
+            type: 'doughnut',
 
-     
+            options: {
+                tooltips: { enabled: false, },
+                hover: { mode: null },
+                cutoutPercentage: 65,
+
+            },
+            data: {
+
+                datasets: [
+                    {
+
+                        backgroundColor: ["rgb(56,142,60)", "rgb(218,218,218)"],
+                        data: [parseFloat("<%= full_time%>"), 86400 - parseFloat("<%= full_time%>")],
+
+                    }
+                ]
+            }
+
+        });
+
+
     </script>
 </body>
 

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>001101</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+        rel="stylesheet" />
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascr 
+    src=" https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<style>
+    body {
+        background-image: url("https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light_nope.jpg?raw=true");
+
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 100%;
+        /* ges Hoehe der Seite -> weitere Hoehenangaben werden relativ hierzu ausgewertet */
+
+        /*  hide scrollbars */
+        opacity: 1.0;
+        -webkit-transition: background 0.5s linear;
+        -moz-transition: background 0.5s linear;
+        -o-transition: background 0.5s linear;
+        -ms-transition: background 0.5s linear;
+        transition: background 0.5s linear;
+        font-family: 'Sunflower', sans-serif;
+        background-attachment: fixed;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgb(56, 56, 56);
+
+    }
+
+    a:hover {
+        color: #4a7846;
+    }
+
+    .login_div {
+        display: none;
+        ;
+        position: absolute;
+    }
+
+    .display {
+        display: block;
+    }
+
+    .register_div {
+        display: none;
+        position: absolute;
+    }
+
+    #timedate {
+        font: small-caps lighter 43px/150% "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+        text-align: left;
+        width: 50%;
+        margin: 40px auto;
+        color: rgb(56, 56, 56);
+
+        padding: 20px;
+    }
+
+    .wrapper {
+        width: 800px;
+        margin: 30px auto;
+
+        text-align: center;
+    }
+
+
+    #seconds,
+    #tens {
+        font-size: 2em;
+    }
+
+    .wdth {
+        width: 0%;
+    }
+</style>
+
+<body>
+
+
+    
+
+    <div id="timedate" style="margin-left: 1vw;margin-top: 2vw;margin-bottom: 3vw;line-height: 100%;">
+        <a>나를 돌아보는 시간</a><br>
+        <a style="font-size: 1vw;padding-top: 0%;">어제보다 나은 오늘이 되었나요?</a><br>
+        <a id="back" style="font-size: 0.82vw;position: absolute;margin-top: -0.7vw;font-family: 'Sunflower', sans-serif;">오늘로 돌아가기</a>
+        
+    </div>
+    <div class="custom-control custom-switch animated fadeIn" style="position:absolute; margin-top: -5.79vw;margin-left: 17vw;">
+     
+        <input type="checkbox" class="custom-control-input" id="customSwitches" />
+        <label class="custom-control-label" for="customSwitches"style="padding-top:0.1vw">다크모드</label>
+    </div>
+   
+    
+
+    <div class="row row-cols-1 row-cols-md-3" style="margin-left:1vh;margin-right:1vh;margin-top: -2.3vw;">
+     
+        <% result.forEach(day => { %>
+       
+        <div class="col mb-4">
+            <div class="card h-100" style="background-color:rgba(229,224,225,0.3);">
+                <!--Card image-->
+
+
+                <!--Card content-->
+                <div class="card-body" style="background-color:rgba(229,224,225,0.3);">
+                   
+                    <% var per = (parseFloat(day.time) / 86400) * 100%>
+                    
+                    <!--Title-->
+                    <h4  style="display:inline;color: rgb(56, 56, 56);"><%= day.month %>월 <%=day.day%>일 &nbsp;</h4>
+                    <h4  id ="b_percent"style="display:inline;color: rgb(56, 56, 56);"><%=per.toFixed(0);%></h4>
+                    <h4  style="display:inline;color: rgb(56, 56, 56); font-size: 0.9vw;">퍼센트 공부함!</h4>
+                    <!--Text-->
+                    <p class="card-text" style="color: rgb(56, 56, 56);margin-top:0.7vw">한줄 메모 : <%=day.memo%>
+                    </p>
+                    <%day.note=day.note.slice(0,-1);%>
+                    <%day.note=day.note.replace(/@/g,' , ');%>
+                    <p  class="card-text" style="color: rgb(56, 56, 56);margin-top: -0.6vw;">
+                        공부한 내용 : <%=day.note%>
+                    </p>    
+
+
+                    <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+                   
+                    
+                </div>
+
+            </div>
+            <!-- Card -->
+        </div>
+
+        <% }) %>
+
+
+
+
+    </div>
+
+
+    <script>
+
+        $(function () {
+
+            $("#createForm").submit((event) => {
+                event.preventDefault();
+                const title = $("#title").val();
+                const studytime = $("#studytime").val();
+                const note = $("#note").val();
+                const name = "<%= user.email%>";
+
+                console.log(title, studytime, note, name);
+
+                $.ajax({
+                    url: "/api/subject",
+                    type: "post",
+                    data: { title, studytime, note, name },
+                })
+                    .done(() => {
+                        location.href = "/api/user/mypage?email=" + "<%= user.email%>";
+                    })
+                    .fail((requst, status, error) => {
+                        alert(requst.responseText);
+                    });
+            });
+           
+
+
+        });
+        
+
+        var flag = true;
+        
+        $("#customSwitches").click(function () {
+            if (flag == true) {
+                console.log(true);
+                $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_dark_nope.jpg?raw=true)");
+                flag = false;
+                $("#doughnut-chart").css("opacity", "0.4");
+            }
+            else {
+                console.log(false);
+                $(document.body).css('background-image', "url(https://github.com/kwonbosung02/webPlanner/blob/master/myapp/views/background_light_nope.jpg?raw=true)");
+                flag = true;
+                $("#doughnut-chart").css("opacity", "1");
+            }
+        });
+       
+        $("#back").click(function(){
+            location.href ="/api/user/mypage?email=" + "<%= user.email%>"
+        });
+        Number.prototype.pad = function (n) {
+            for (var r = this.toString(); r.length < n; r = 0 + r);
+            return r;
+        };
+
+        function updateClock() {
+            var now = new Date();
+            var
+                sec = now.getSeconds(),
+                min = now.getMinutes(),
+                hou = now.getHours(),
+                mo = now.getMonth(),
+                dy = now.getDate(),
+                yr = now.getFullYear();
+            var months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+            var tags = ["mon", "d", "y", "h", "m", "s"],
+                corr = [months[mo], dy, yr, hou.pad(2), min.pad(2), sec.pad(2)];
+            for (var i = 0; i < tags.length; i++)
+                document.getElementById(tags[i]).firstChild.nodeValue = corr[i];
+        }
+
+        function initClock() {
+            updateClock();
+            window.setInterval("updateClock()", 1);
+        }
+
+     
+
+
+    </script>
+</body>
+
+</html>
