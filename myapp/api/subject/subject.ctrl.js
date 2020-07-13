@@ -94,5 +94,17 @@ const clear = (req,res)=>{
     });
 
 }
-module.exports = {showCreatePage,create,checkId,detail,updateTime,remove,clear};
+const check = (req,res)=>{
+    console.log("체크가 호출됨")
+    const {id} = req.body;
+    SubjectModel.findByIdAndUpdate(id,{success:1},(err,result)=>{
+        console.log("check 업데이트 완료");
+        if (err) {
+            console.error(err);
+            return res.status(500).send("에러가 발생했습니다");
+          }
+          res.json(result);
+    })
+}
+module.exports = {showCreatePage,create,checkId,detail,updateTime,remove,clear,check};
 

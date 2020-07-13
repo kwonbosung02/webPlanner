@@ -32,6 +32,10 @@ const SubjectSchema = new mongoose.Schema({
     percent :{
         type : String,
         default:0
+    },
+    success:{
+        type:Boolean,
+        default:0
     }
 });
 

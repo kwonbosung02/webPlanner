@@ -15,6 +15,7 @@ router.get("/new",ctrl.showCreatePage);
 router.get('/:id',ctrl.checkId, ctrl.detail);
 
 router.post("/",ctrl.create);
+router.put("/check",ctrl.check);
 router.put("/settime",ctrl.updateTime);
 module.exports = router;
 

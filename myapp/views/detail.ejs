@@ -160,6 +160,8 @@
         <div class="dropdown-menu " style="margin-left: 1vw;">
             <a class="dropdown-item" href="http://localhost:3000/api/user/mypage?email=<%=user.email%>"
                 style="font-size:0.8vw;">이전 페이지로 돌아가기</a>
+            <a id="finish"class="dropdown-item" 
+                style="font-size:0.8vw;">공부 완료로 표시</a>
 
             <a class="dropdown-item" id="delete" href="#" style="font-size:0.8vw;color:red">과목 삭제하기</a>
 
@@ -189,7 +191,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-dark-green btn-block" data-dismiss="modal"
-                        onClick="history.go(0);">페이지 리로드</button>
+                        onClick="location.href='/api/user/mypage?email=<%=user.email%>'">완료!</button>
                 </div>
             </div>
         </div>
@@ -212,6 +214,27 @@
                 <div class="modal-footer">
                     <button type="button" id="deletebt" class="btn btn-primary btn-red btn-block"
                         data-dismiss="modal">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="fin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" style="overflow: hidden;">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" >학습을 완료했습니까?</h5>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="finbtn" class="btn btn-primary btn-dark-green btn-block"
+                        data-dismiss="modal">학습완료</button>
                 </div>
             </div>
         </div>
@@ -323,7 +346,7 @@
                 $.ajax({
                     url: "/api/subject/settime",
                     type: "put",
-                    data: { time, id: "<%=result._id%>" ,studytime: "<%=result.studyTime%>"}
+                    data: { time, id: "<%=result._id%>", studytime: "<%=result.studyTime%>" }
                 }).done(() => {
                     $('#mod').modal();
 
@@ -334,6 +357,19 @@
                         alert(request.responseText);
                     });
             });
+            $("#finbtn").on('click',() =>{
+                console.log("--------------------------")
+                $.ajax({
+                    url: "/api/subject/check",
+                    type: "put",
+                    data:{id:"<%=result._id%>"}
+                }).done(() =>{
+                    location.href="/api/user/mypage?email="+"<%=user.email%>";
+                }).fail((request, status, error) => {
+                        alert(request.responseText);
+                    });
+              
+            })
             $("#delete").on('click', () => {
                 $('#del').modal();
             });
@@ -348,6 +384,9 @@
                     alert(requst.responseText);
                 });
             });
+            $("#finish").on('click',()=>{
+                $('#fin').modal();
+            })
 
 
 

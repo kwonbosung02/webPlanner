@@ -7,7 +7,7 @@ var logger = require('morgan');
 var app = express();
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/planner', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true});
-
+mongoose.set('useFindAndModify', false);
 
 
 var db = mongoose.connection;
@@ -31,11 +31,10 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser("secretKey"));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(userCtrl.checkAuth);
-
 
 app.get("/",(req,res) =>{
   res.render("index");

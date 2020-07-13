@@ -9,7 +9,7 @@ const create = (req, res) => {
 
     if (!month || !day || !memo || !name || !send_time) return res.status(404).send('필수항목이 입력되지 않았습니다').end();
 
-    SubjectModel.find({ user: name }, (err, result) => {
+    SubjectModel.find({ user: name ,success:true}, (err, result) => {
         console.log(result.length);
         for (var i = 0; i < result.length; i++) {
 
