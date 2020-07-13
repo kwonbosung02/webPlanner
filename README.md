@@ -12,7 +12,7 @@ mongod --dbpath=data
 ### 라이트모드 UI
 
 ![메인 밝은거](./images/1.JPG)
-메이 페이지
+메인 페이지
 ![메인 밝은거](./images/2.JPG)
 로그인 페이지
 ![메인 밝은거](./images/3.JPG)
