@@ -5,6 +5,8 @@
 ```
 cd myapp
 npm install
+mkdir data
+mongod --dbpath=data
 ```
 
 ### 라이트모드 UI
